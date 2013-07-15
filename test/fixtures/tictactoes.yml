@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  x_id: 1
+  o_id: 1
+  x_game_state: MyString
+
+two:
+  x_id: 1
+  o_id: 1
+  x_game_state: MyString

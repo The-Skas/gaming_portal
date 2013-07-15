@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  game_id: 1
+  square_n: 1
+  move: 1
+  player: MyString
+
+two:
+  game_id: 1
+  square_n: 1
+  move: 1
+  player: MyString

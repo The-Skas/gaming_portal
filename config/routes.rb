@@ -1,4 +1,5 @@
 GamingPortal::Application.routes.draw do
+
   resources :tictactoes
 
   # The priority is based upon order of creation:

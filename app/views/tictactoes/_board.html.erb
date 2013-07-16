@@ -1,0 +1,13 @@
+<table border="1" class="grid">
+    <form action="/tictactoes">
+
+    <% count = -1 %>
+    <% (0..2).each do |i| %>
+    <tr>
+        <% (0..2).each do |j| %>
+        <td><input type="image" name="<%= count += 1 %>" src="faf"></td>
+        <%end%>
+    </tr>
+    <%end%>
+    </form>
+</table>

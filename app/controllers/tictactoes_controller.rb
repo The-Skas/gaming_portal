@@ -18,7 +18,6 @@ class TictactoesController < ApplicationController
     @tictactoe.x_id = session[:user_id]
     @tictactoe.save
     # session[:player] = "X"
-    binding.pry
     binding.pry if $debug
     redirect_to tictacto_path(@tictactoe)
   end
@@ -30,7 +29,6 @@ class TictactoesController < ApplicationController
     if (session[:user_id] == @tictactoe.x_id || @tictactoe.o_id)
       if (@tictactoe.game_over?)
           @playagain = true
-          binding.pry
       else
         unless @tictactoe.update_tictactoe(params)
           flash[:alert] = "Its not your turn yet."

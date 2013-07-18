@@ -12,7 +12,6 @@
 <body>
 <% if current_user %>
     <%= link_to 'Log Out', session_path(session), method: :delete, data: {confirm: 'Are you sure?'}%>
-    Yoyoyoyo
 <% else %>
     <% if @register == true %>
         <%= render partial: 'shared/register' %>

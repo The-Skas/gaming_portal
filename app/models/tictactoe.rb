@@ -35,7 +35,6 @@ public
     @winner = calc_game_state(@x_moves, @o_moves)
 
     return @winner
-    binding.pry
  end
     #giving my fingers a break
     def moves
@@ -60,7 +59,6 @@ public
             #Checks if draw if no winner is available
             if (winner == nil)
                 if (x_moves.size + o_moves.size >= 9)
-                    binding.pry
                     self.x_game_state = "Draw"
                     winner = "none"
                     self.save
@@ -73,7 +71,6 @@ public
     #Returns the greatest move number in the joint relationship between Tictactoe
     #and tictactoe_moves
     def last_move
-        binding.pry if $debug
         #the last line is always returned... Learn your shiz.
         self.moves.first(:conditions => ["move = ?", self.moves.maximum("move")])
     end
@@ -127,7 +124,6 @@ public
         if (@most_recent_game)
             return @most_recent_game
         else
-            binding.pry
             new_ttt= Tictactoe.create_and_setup
             #assing the id of previous x, to the current o, and vice versa.
             new_ttt.o_id = self.x_id

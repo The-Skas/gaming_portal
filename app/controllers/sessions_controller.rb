@@ -7,7 +7,6 @@ class SessionsController < ApplicationController
     @email = params[:email]
     @password = params[:password]
     @user = User.where(email: "#{@email}").first
-    binding.pry
     if (@user && @user.authenticate(@password))#are authenticated...
         session[:user_id] = @user.id
         redirect_to root_url, notice: 'Logged in!'

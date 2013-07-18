@@ -3,9 +3,31 @@
 <% if @expand %>
     <%= link_to 'Tictactoe', root_url%>
     <ul>
-    <li><%= link_to 'Create a tictactoe game',
-            root_path, :onclick=>"window.open('/tictactoes/create','#{$chat_counter.to_s}', 'height=600, width=600');return false;"%>
-        </li>
+        <li>Create Game</li>
+        <ul>
+            <li><%= link_to 'VS CPU',
+            root_path, :onclick=>"window.open('/tictactoes/create',counter++, 'height=600, width=600');return false;"%></li>
+            <li><%= link_to 'VS. Player',
+            root_path, :onclick=>"window.open('/tictactoes/create',counter++, 'height=600, width=600');return false;"%>
+            </li>
+        </ul>
+        <li>Join a Game</li>
+        <ul>
+        <% @cur_user_id = session[:user_id] %>
+        <% @tictactoes = Tictactoe.where("o_id is NULL AND x_id is NOT NULL AND x_id != ?", @cur_user_id) %>
+        <% if @tictactoes %>
+
+            <% @tictactoes.each do |ttt| %>
+                <li>
+                <% @name = User.find(ttt.x_id).user_name %>
+                <% @game_id = ttt.id %>
+
+                <%= link_to "Play VS. <span style='color: black;'>#{@name}</span>".html_safe, "/tictactoes/#{@game_id}/join",  :onclick=>"window.open('/tictactoes/#{@game_id}/join','#{$chat_counter.to_s}', 'height=600, width=600');return false;" %>
+
+            <%end %>
+            </li>
+        <% end %>
+        </ul>
              <br>
     </ul>
 <% else %>

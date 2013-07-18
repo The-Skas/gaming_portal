@@ -1,5 +1,9 @@
 $chat_counter =0
 class TictactoesController < ApplicationController
+  #Function_helpers
+    def assign_player
+    end
+  #
   def index
     redirect_to tictactoe_url, method: :post
   end
@@ -13,7 +17,7 @@ class TictactoesController < ApplicationController
     # $chat_counter +=1
     @tictactoe.x_id = session[:user_id]
     @tictactoe.save
-    session[:player] = "X"
+    # session[:player] = "X"
     binding.pry
     binding.pry if $debug
     redirect_to tictacto_path(@tictactoe)
@@ -25,7 +29,8 @@ class TictactoesController < ApplicationController
     @tictactoe = Tictactoe.find(params[:id])
     if (session[:user_id] == @tictactoe.x_id || @tictactoe.o_id)
       if (@tictactoe.game_over?)
-        binding.pry
+          @playagain = true
+          binding.pry
       else
         unless @tictactoe.update_tictactoe(params)
           flash[:alert] = "Its not your turn yet."
@@ -35,7 +40,7 @@ class TictactoesController < ApplicationController
       redirect_to tictacto_url(@tictactoe)
     else
       flash[:alert] = "You dont have permission to access this game!"
-      redirect_to root
+      redirect_to root_url
     end
   end
 
@@ -47,7 +52,7 @@ class TictactoesController < ApplicationController
     @tictactoe = Tictactoe.find(params[:id])
 
     if (@tictactoe.x_id != session[:user_id])
-      session[:player] = 'O'
+      # session[:player] = 'O'
       @tictactoe.o_id = session[:user_id]
       @tictactoe.save
       redirect_to tictacto_path(@tictactoe)

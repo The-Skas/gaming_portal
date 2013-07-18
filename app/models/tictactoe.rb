@@ -15,6 +15,8 @@ public
             mv.save
         end
         t.x_game_state = ""
+        t.o_id = ""
+        t.x_id = ""
         t.save
         return t
     end
@@ -112,4 +114,69 @@ public
         end
         return true
     end
+        #takes a type ttt
+    def play_again
+        #add stuff for assessing cpu logic.
+        #First check if there is already a game, the most recent one. That hasnt been finished. if
+        #So.. return that
+        @most_recent_game = nil
+        Tictactoe.order("created_at")
+        @tictactoes = Tictactoe.where("x_id = ? AND o_id = ? AND x_game_state = '' OR x_id = ? AND o_id = ?
+                                                         AND x_game_state = ''", self.x_id, self.o_id, self.o_id, self.x_id).order("created_at DESC")
+        @most_recent_game = @tictactoes.first
+        if (@most_recent_game)
+            return @most_recent_game
+        else
+            binding.pry
+            new_ttt= Tictactoe.create_and_setup
+            #assing the id of previous x, to the current o, and vice versa.
+            new_ttt.o_id = self.x_id
+            new_ttt.x_id = self.o_id
+            new_ttt.save
+            return new_ttt
+        end
+    end
+
+    def playing_as(user)
+        @user_id = user[:user_id]
+        if (@user_id == self.x_id)
+            return 'X'
+        elsif(@user_id == self.o_id)
+            return 'O'
+        end
+    end
+
+    def calculate_total_score
+        xo_scores =[0,0]
+        @tictactoes = Tictactoe.where("x_id = ? AND o_id = ? AND x_game_state != '' OR x_id = ? AND o_id = ? AND x_game_state != ''", self.x_id, self.o_id, self.o_id, self.x_id)
+        @tictactoes.each do |tictactoe|
+            if tictactoe.x_game_state == "Win"
+                if(self.x_id == tictactoe.x_id)
+                    xo_scores[0] += 1
+                else
+                    #add curr o score
+                    xo_scores[1] += 1
+                end
+            elsif tictactoe.x_game_state == "Lose"
+                if(self.x_id == tictactoe.x_id)
+                    xo_scores[1] += 1
+                else
+                    xo_scores[0] += 1
+                end
+            end
+        end
+        return xo_scores
+    end
+
+    def get_user_x
+        return User.find(self.x_id).user_name.capitalize
+    end
+    def get_user_o
+        if (self.o_id)
+            return User.find(self.o_id).user_name.capitalize
+        else
+            return "None"
+        end
+    end
 end
+

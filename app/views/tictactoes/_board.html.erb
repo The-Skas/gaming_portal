@@ -1,4 +1,4 @@
-<table border="1" class="grid">
+<table border="1" class="grid pull-left span4">
     <form name="form" action=  "/tictactoes/<%= @tictactoe.id %>" method="post">
     <% @moves = @tictactoe.moves.sort! %>
     <% count = -1 %>
@@ -14,9 +14,13 @@
                 </td>
             <% else %>
                 <td>
-                    <% if session[:player] != @tictactoe.last_move.player %>
+
+                    <% if @tictactoe.playing_as(session)!= @tictactoe.last_move.player%>
+
                         <% if @tictactoe.x_game_state.empty? %>
-                            <input type="submit"  name="square" value="<%= count %>">
+                                <% unless @tictactoe.playing_as(session) == "O" && @tictactoe.last_move.player == "" %>
+                                <input type="submit"  name="square" value="<%= count %>">
+                                <% end %>
                         <% end %>
                     <% else %>
                         <% flash[:alert] = "Its not your turn yet." %>
@@ -27,13 +31,27 @@
         </tr>
     <%end%>
     <% binding.pry if $debug %>
-    <input type="hidden" name="player" value="<%=session[:player]%>">
+    <input type="hidden" name="player" value="<%=@tictactoe.playing_as(session)%>">
     </form>
-    <% if @tictactoe.x_game_state.capitalize == "Win" %>
-        <h1>X has won!</h1>
-    <% elsif @tictactoe.x_game_state.capitalize == "Lose" %>
-        <h1>O has won!</h1>
-    <% elsif @tictactoe.x_game_state.capitalize == "Draw" %>
-        <h1> Draw! </h1>
-    <% end %>
+    <% if @tictactoe.x_game_state != "" %>
+            <% @pause = true %>
+        <% if @tictactoe.x_game_state.capitalize == "Win" %>
+            <% if @tictactoe.playing_as(session) == "X" %>
+                <h1>You Win!</h1>
+            <%elsif @tictactoe.playing_as(session)== "O" %>
+                <h1>You Lose!</h1>
+            <% end %>
+            <h1>X has won!</h1>
+        <% elsif @tictactoe.x_game_state.capitalize == "Lose" %>
+            <% if @tictactoe.playing_as(session) == "X" %>
+                <h1>You Lose!</h1>
+            <%elsif @tictactoe.playing_as(session) == "O" %>
+                <h1>You Win!</h1>
+            <% end %>
+        <% elsif @tictactoe.x_game_state.capitalize == "Draw" %>
+            <h1> Draw! </h1>
+        <% end %>
+        <% @new_tictactoe = @tictactoe.play_again %>
+        <% goto_page(@new_tictactoe)%>
+    <% end%>
 </table>

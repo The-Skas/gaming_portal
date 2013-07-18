@@ -1,2 +1,20 @@
 <% binding.pry if $debug %>
+<div style="float: left;">
 <%= render 'board' %>
+</div>
+<table class="text-center"style="float: right">
+  <% @total_scores=@tictactoe.calculate_total_score %>
+  <tr>
+    <th>   Total Wins:</th>
+  </tr>
+  <tr bgcolor="#FF0000">
+    <th><%= @tictactoe.get_user_x %></th>
+    <th> <%= @tictactoe.get_user_o %></th>
+  </tr>
+  <tr>
+    <td><%=@total_scores[0] %></td>
+    <td><%=@total_scores[1] %></td>
+  </tr>
+</table>
+
+

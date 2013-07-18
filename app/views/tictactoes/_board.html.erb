@@ -1,13 +1,39 @@
 <table border="1" class="grid">
-    <form action="/tictactoes">
-
+    <form name="form" action=  "/tictactoes/<%= @tictactoe.id %>" method="post">
+    <% @moves = @tictactoe.moves.sort! %>
     <% count = -1 %>
     <% (0..2).each do |i| %>
-    <tr>
+        <tr>
         <% (0..2).each do |j| %>
-        <td><input type="image" name="<%= count += 1 %>" src="faf"></td>
+            <% count += 1%>
+            <% if @moves[count].player == "X"%>
+                <td class="square p_X">
+                </td>
+            <% elsif @moves[count].player == "O"%>
+                <td class= "square p_O">
+                </td>
+            <% else %>
+                <td>
+                    <% if session[:player] != @tictactoe.last_move.player %>
+                        <% if @tictactoe.x_game_state.empty? %>
+                            <input type="submit"  name="square" value="<%= count %>">
+                        <% end %>
+                    <% else %>
+                        <% flash[:alert] = "Its not your turn yet." %>
+                    <% end %>
+                </td>
+            <%end%>
         <%end%>
-    </tr>
+        </tr>
     <%end%>
+    <% binding.pry if $debug %>
+    <input type="hidden" name="player" value="<%=session[:player]%>">
     </form>
+    <% if @tictactoe.x_game_state.capitalize == "Win" %>
+        <h1>X has won!</h1>
+    <% elsif @tictactoe.x_game_state.capitalize == "Lose" %>
+        <h1>O has won!</h1>
+    <% elsif @tictactoe.x_game_state.capitalize == "Draw" %>
+        <h1> Draw! </h1>
+    <% end %>
 </table>

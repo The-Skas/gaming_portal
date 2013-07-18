@@ -12,6 +12,25 @@
  *= require_tree .
  */
 .grid {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
+}
+.hide {
+    display: none;
+}
+.square {
+    width: 100px;
+    height: 100px;
+    background-size: cover;
+}
+.p_X {
+    background-image: url("X.png");
+}
+.p_O {
+    background-image: url("O.png");
+}
+
+.error {
+    color: red;
+
 }

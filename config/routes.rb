@@ -1,7 +1,22 @@
 GamingPortal::Application.routes.draw do
 
-  resources :tictactoes
 
+  root to: 'home#index'
+  get '/home/register', to: 'home#register', as: 'register'
+
+
+  post '/tictactoes/:id', to: 'tictactoes#update', as: 'update_tictactoe'
+  get '/tictactoes/:id/join', to: 'tictactoes#join'
+  get '/tictactoes/expand', to: 'tictactoes#expand', as: 'expand_tictactoes'
+  get '/tictactoes/contract', to: 'tictactoes#contract', as: 'contract_tictactoes'
+  get '/tictactoes/create', to: 'tictactoes#create', as: 'tictactoe'
+
+  get '/login', to: 'sessions#login', as: 'login'
+
+
+  resources :tictactoes
+  resources :sessions, only: [:create, :destroy]
+  resources :users
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

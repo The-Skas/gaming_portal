@@ -63,21 +63,7 @@ GamingPortal::Application.configure do
 
 # ActionMailer Config
 # Setup for production - deliveries, no errors raised
-config.action_mailer.delivery_method = :smtp
-config.action_mailer.perform_deliveries = true
-config.action_mailer.raise_delivery_errors = false
 
-
-config.action_mailer.default :charset => "utf-8"
-
-config.action_mailer.smtp_settings = {
-  :address   => "smtp.mandrillapp.com",
-
-
-  :port      => 587,
-  :user_name => "skas@live.co.uk",
-  :password  => "g-MJapw99DnrZuP-jZnvYQ"
-}
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)

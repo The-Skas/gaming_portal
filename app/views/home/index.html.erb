@@ -1,12 +1,11 @@
-<h1>Home#index</h1>
-<p>Find me in app/views/home/index.html.erb</p>
+<div class = "index-background">
 <% if @expand %>
     <%= link_to 'Tictactoe', root_url%>
-    <ul>
-        <li>Create Game</li>
+    <ul class="grey">
+        <li >Create Game</li>
         <ul>
             <li><%= link_to 'VS CPU',
-            root_path, :onclick=>"window.open('/tictactoes/create',counter++, 'height=600, width=600');return false;"%></li>
+            root_path, :onclick=>"window.open('/tictactoes/createcpu',counter++, 'height=600, width=600');return false;" %></li>
             <li><%= link_to 'VS. Player',
             root_path, :onclick=>"window.open('/tictactoes/create',counter++, 'height=600, width=600');return false;"%>
             </li>
@@ -14,7 +13,7 @@
         <li>Join a Game</li>
         <ul>
         <% @cur_user_id = session[:user_id] %>
-        <% @tictactoes = Tictactoe.where("o_id is NULL AND x_id is NOT NULL AND x_id != ?", @cur_user_id) %>
+        <% @tictactoes = Tictactoe.where("o_id is NULL AND x_id is NOT NULL AND x_id != ? AND cpu is NOT TRUE", @cur_user_id) %>
         <% if @tictactoes %>
 
             <% @tictactoes.each do |ttt| %>
@@ -22,14 +21,44 @@
                 <% @name = User.find(ttt.x_id).user_name %>
                 <% @game_id = ttt.id %>
 
-                <%= link_to "Play VS. <span style='color: black;'>#{@name}</span>".html_safe, "/tictactoes/#{@game_id}/join",  :onclick=>"window.open('/tictactoes/#{@game_id}/join','#{$chat_counter.to_s}', 'height=600, width=600');return false;" %>
+                <%= link_to "Play VS. <span style='color: white;'>#{@name}</span>".html_safe, "/tictactoes/#{@game_id}/join",  :onclick=>"window.open('/tictactoes/#{@game_id}/join','#{$chat_counter.to_s}', 'height=600, width=600');return false;" %>
 
             <%end %>
             </li>
         <% end %>
         </ul>
              <br>
+        <li>Current Games: </li>
+        <ul>
+        <% @cur_user_id = session[:user_id] %>
+        <% @tictactoes = Tictactoe.where("x_id = #{@cur_user_id} AND x_game_state = '' AND o_id is NOT NULL OR o_id = #{@cur_user_id} AND x_game_state = '' AND x_id is NOT NULL") %>
+        <% if @tictactoes %>
+            <% @tictactoes.each do |ttt| %>
+                    <li>
+                    <% if ttt.x_id == @cur_user_id %>
+                        <%if ttt.o_id %>
+                            <% @name = User.find(ttt.o_id).user_name %>
+                        <% else %>
+                            <% @name = "CPU" %>
+                        <% end%>
+                    <% else %>
+                        <% if ttt.x_id %>
+                             <% @name = User.find(ttt.x_id).user_name %>
+                         <% else %>
+                            <% @name = "CPU" %>
+                         <% end %>
+                    <% end %>
+                    <% @game_id = ttt.id %>
+                    <%= link_to "Continue VS. <span style='color: white;'>#{@name}</span>".html_safe, "/tictactoes/#{@game_id}/join",  :onclick=>"window.open('/tictactoes/#{@game_id}/join','#{$chat_counter.to_s}', 'height=600, width=600');return false;" %>
+
+            <%end %>
+        <% end %>
+        </ul>
     </ul>
 <% else %>
     <%= link_to 'Tictactoe', expand_tictactoes_url%>
 <% end %>
+<% (0..30).each do %>
+    <br>
+<%end%>
+</div>

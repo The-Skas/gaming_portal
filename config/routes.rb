@@ -4,7 +4,7 @@ GamingPortal::Application.routes.draw do
   root to: 'home#index'
   get '/home/register', to: 'home#register', as: 'register'
 
-
+  get '/tictactoes/createcpu', to: 'tictactoes#create_cpu', as: 'cpu_tictactoe'
   post '/tictactoes/:id', to: 'tictactoes#update', as: 'update_tictactoe'
   get '/tictactoes/:id/join', to: 'tictactoes#join'
   get '/tictactoes/expand', to: 'tictactoes#expand', as: 'expand_tictactoes'

@@ -3,5 +3,5 @@ class User < ActiveRecord::Base
   validates :email, presence: true, uniqueness: true
   validates :user_name, presence: true, uniqueness: true
 
-  attr_accessible :email, :password, :password_confirmation, :role, :user_name
+  attr_accessible :email, :password, :password_confirmation, :role, :user_name, :cpu
 end

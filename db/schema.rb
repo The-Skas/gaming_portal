@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130716124852) do
+ActiveRecord::Schema.define(:version => 20130719002011) do
 
   create_table "tictactoe_moves", :force => true do |t|
     t.integer  "tictactoe_id"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20130716124852) do
     t.string   "x_game_state"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.boolean  "cpu"
   end
 
   create_table "users", :force => true do |t|

@@ -9,37 +9,54 @@ class TictactoesController < ApplicationController
   end
 
   def create
-
     # @tictactoe = Tictactoe.new
     # @tictactoe.init
-    $chat_counter += 1
     @tictactoe = Tictactoe.create_and_setup
     # $chat_counter +=1
     @tictactoe.x_id = session[:user_id]
+    @tictactoe.cpu = false
     @tictactoe.save
     # session[:player] = "X"
     binding.pry if $debug
     redirect_to tictacto_path(@tictactoe)
   end
-
+  def create_cpu
+    @tictactoe = Tictactoe.create_and_setup
+    @tictactoe.x_id = session[:user_id]
+    @tictactoe.cpu = true
+    @tictactoe.save
+    binding.pry if $debug
+    redirect_to tictacto_path(@tictactoe)
+  end
   def update
     #Checks self state
     #If self has x won , set the x won variable to true.
     @tictactoe = Tictactoe.find(params[:id])
-    if (session[:user_id] == @tictactoe.x_id || @tictactoe.o_id)
-      if (@tictactoe.game_over?)
-          @playagain = true
-      else
-        unless @tictactoe.update_tictactoe(params)
-          flash[:alert] = "Its not your turn yet."
+        if (session[:user_id] == @tictactoe.x_id || @tictactoe.o_id)
+          if (@tictactoe.cpu == true)
+            if (@tictactoe.game_over?)
+                binding.pry
+                @playagain = true
+            else
+                @tictactoe.update_with_cpu(params)
+                @winner = @tictactoe.get_winner
+            end
+          else
+            if (@tictactoe.game_over?)
+                @playagain = true
+            else
+              unless @tictactoe.update_tictactoe(params)
+                flash[:alert] = "Its not your turn yet."
+              end
+              @winner = @tictactoe.get_winner
+            end
+          end
+          redirect_to tictacto_url(@tictactoe)
+        else
+          flash[:alert] = "You dont have permission to access this game!"
+          redirect_to root_url
         end
-        @winner = @tictactoe.get_winner
-      end
-      redirect_to tictacto_url(@tictactoe)
-    else
-      flash[:alert] = "You dont have permission to access this game!"
-      redirect_to root_url
-    end
+
   end
 
   def show

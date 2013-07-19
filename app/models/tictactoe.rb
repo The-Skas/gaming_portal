@@ -86,7 +86,22 @@ public
             return true
         end
     end
+     #Calculate cpu stuff
+     def update_with_cpu(params)
+        @move = self.move_by_square(params[:square])
+        @move.player = params[:player]
+        @move.move = self.last_move.move+1
+        @move.save
 
+        open_spaces = self.moves.where(move: 0).shuffle!
+        if (open_spaces.any?)
+            cpu_move = open_spaces.first
+            cpu_move.player = "O"
+            cpu_move.move = self.last_move.move + 1
+            cpu_move.save
+        end
+        #Get all
+     end
     # update the users move into the database if it is his turn , also determines if its nil that means
     # its the first move on the board. So automatically initializes 'O' to be last played. But it isnt so.
     def update_tictactoe params
@@ -97,7 +112,6 @@ public
             @last_move_n = self.last_move.move
             @last_played = self.last_move.player
         end
-
         if @last_played == params[:player]
            return false
         elsif !params[:player].blank?
@@ -165,7 +179,11 @@ public
     end
 
     def get_user_x
-        return User.find(self.x_id).user_name.capitalize
+        if (self.x_id)
+            return User.find(self.x_id).user_name.capitalize
+        else
+            return "CPU"
+        end
     end
     def get_user_o
         if (self.o_id)
